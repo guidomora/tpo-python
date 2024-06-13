@@ -2,16 +2,16 @@ import random
 def main():
     usuarios = [45,32,65]
     
-    nombreCategorias = ["GPU","RAM","CPU"]
-    codigoCategoria = [23,11,56]
+    nombreCategorias = ["GPU"]
+    codigoCategoria = [23]
     
-    productos = [1,2,3,4,5,6]
-    nombreProducto = ["Placa RADEON 4545","Memoria Ram de 4 GB","Procesadores I7","Placa nvidia 4060","Memoria Ram de 8 GB","Procesador pemtiun"]
-    categoriaProducto=[23,11,56,23,11,56]
-    stock = [2,2,2,2,2,2]
+    productos = [1,2,3,4]
+    nombreProducto = ["Placa RADEON 4545","Placa nvidia 4060", "Placa rtx 3070ti", "Placa RADEON rx 7900"]
+    categoriaProducto=[23,23,23,23]
+    stock = [2,2,2,2]
     
     
-    precios = [50,10,55,20,25,30] 
+    precios = [50,10,55,20,] 
     ValorFinalCompra = []
     
     validacionLista(usuarios,"Ingrese su ID de usuario: ", "El ID de usuario es incorrecto ingrese unn ID valido: ")
