@@ -7,7 +7,7 @@ def main():
     
     productos = [1,2,3,4,5,6]
     nombreProducto = ["Placa RADEON 4545","Memoria Ram de 4 GB","Procesadores I7","Placa nvidia 4060","Memoria Ram de 8 GB","Procesador pemtiun"]
-    categoria=[45,32,56,45,32,56]
+    categoriaProducto=[23,11,56,23,11,56]
     stock = [2,2,2,2,2,2]
     
     
@@ -23,7 +23,7 @@ def main():
     while opcion != -1:
         
         if opcion == 1:
-            ValorCompra = comprar(productos,stock,precios, nombreProducto)
+            ValorCompra = comprar(productos,stock,precios, nombreProducto,codigoCategoria,nombreCategorias,categoriaProducto)
             imprimirMenu()
             opcion = int(input("Ingrese una opcion o -1 para finalizar: "))
         
@@ -36,16 +36,15 @@ def main():
                 opcion = int(input("Usted ya ha realizado el pago, le suplicamos cerrar el tramite"))
 
     
-def comprar(productos,stock,precios, nombreProducto):
+def comprar(productos,stock,precios, nombreProducto,codigoCategoria,nombreCategorias,categoriaProducto):
     carritoProducto=[]
     carrito=[]
     montoTotal = 0
     
-    imprimirProductosCategoria()
+    categoria = imprimirCategoria(codigoCategoria,nombreCategorias)
     
-    # print("Producto 			Identificador	Stock 		Precio")
-    # for i in range(len(productos)):
-    #     print("%15s \t %8d\t %8d \t %8d" %(nombreProducto[i], productos[i],stock[i], precios[i]))
+    imprimirProductosCategoria(categoria,categoriaProducto,nombreProducto,productos,stock,precios)
+
         
     ident = int(input("Ingrese el identificador del producto que desea agregar al carrito o -1 para finalizar"))
     
@@ -149,10 +148,21 @@ def imprimirMenu():
     print("2. Ver carrito")
     print("3. Finalizar Pago")
     print("-1. Finalizar ")
-    
+
+def imprimirCategoria(codigoCategoria,nombreCategorias):
+    print("CATEGORIAS")
+    for i in range(len(codigoCategoria)):
+        print(codigoCategoria[i],". ",nombreCategorias[i])
+
+    categoria = validacionLista(codigoCategoria,"Ingrese el codigo de una categoria: ", "El codigo de la categoria es incorrecto: ")
+
+
+    return categoria
+
+
 def imprimirProductosCategoria(categoria,listaCategorias,nombreProducto,productos,stock,precios):
     print("Producto 			Identificador	Stock 		Precio")
-    for i in range(listaCategorias):
+    for i in range(len(listaCategorias)):
         if listaCategorias[i]==categoria:
             print("%15s \t %8d\t %8d \t %8d" %(nombreProducto[i], productos[i],stock[i], precios[i]))
             
