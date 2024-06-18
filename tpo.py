@@ -37,8 +37,10 @@ def main():
             ValorFinalCompra.append(ValorFinal)
             opcion = int(input("Ingrese -1 para finalizar: "))
             
+            
             while opcion != -1:
                 opcion = int(input("Usted ya ha realizado el pago, le suplicamos cerrar el tramite"))
+             
 
     
 def comprar(productos,stock,precios, nombreProducto,codigoCategoria,nombreCategorias,categoriaProducto):
@@ -66,7 +68,10 @@ def comprar(productos,stock,precios, nombreProducto,codigoCategoria,nombreCatego
         
         imprimirProductosCategoria(categoria,categoriaProducto,nombreProducto,productos,stock,precios)
         ident = validarProducto(productos)
-
+    # --------------------------------------------------------
+    # falta terminar para que te vuelva a llevar al menu principal, en vez de finalizar la compra
+    imprimirMenu()
+        
     if len(carrito) > 0:
         for i in range(len(carrito)):
             montoTotal += carrito[i]
@@ -126,6 +131,8 @@ def pago(ValorCompra):
         print("Felicidades se le aplicara un descuento promocional del 15 %")
 
     if Fpago == 1:
+        print("En efectivo se le aplicara un descuento del 10%")
+        ValorCompra = ValorCompra * 0.90
         ValorFinal = ValorCompra
         print(ValorFinal)
             
