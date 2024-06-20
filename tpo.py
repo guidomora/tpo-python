@@ -9,10 +9,13 @@ def main():
     nombreProducto = ["Placa RADEON 4545","Placa nvidia 4060", "Placa rtx 3070ti", "Placa RADEON rx 7900"]
     categoriaProducto=[23,23,23,23]
     stock = [2,2,2,2]
+    carritoProducto=[]
+    carrito=[]
     
     
     precios = [50,10,55,20,] 
     ValorFinalCompra = []
+    ValorCompra=0
     
     validacionLista(usuarios,"Ingrese su ID de usuario: ", "El ID de usuario es incorrecto ingrese unn ID valido: ")
     
@@ -23,29 +26,34 @@ def main():
     while opcion != -1:
         
         if opcion == 1:
-            ValorCompra = comprar(productos,stock,precios, nombreProducto,codigoCategoria,nombreCategorias,categoriaProducto)
+            ValorCompra = comprar(productos,stock,precios, nombreProducto,codigoCategoria,nombreCategorias,categoriaProducto,carritoProducto,carrito)
             
             if ValorCompra != -1:
                 ValorFinal = pago(ValorCompra)
                 ValorFinalCompra.append(ValorFinal)
             
-            imprimirMenu()
+            # imprimirMenu()
             opcion = validacionRango(1,3,-1,"Ingrese una opcion o -1 para finalizar: ", "Usted ingreso una opcion no valida para el sistema, ingrese una opcion valida: ")
         
         elif opcion == 3:
-            ValorFinal = pago(ValorCompra)
-            ValorFinalCompra.append(ValorFinal)
-            opcion = int(input("Ingrese -1 para finalizar: "))
-            
-            
-            while opcion != -1:
-                opcion = int(input("Usted ya ha realizado el pago, le suplicamos cerrar el tramite"))
+            if ValorCompra == 0:
+                print("No se ha realizado ninguna compra")
+                imprimirMenu()
+                opcion = validacionRango(1,3,-1,"Ingrese una opcion o -1 para finalizar: ", "Usted ingreso una opcion no valida para el sistema, ingrese una opcion valida: ")
+            else:
+                ValorFinal = pago(ValorCompra)
+                ValorFinalCompra.append(ValorFinal)
+                opcion = int(input("Ingrese -1 para finalizar: "))
+                
+                
+                while opcion != -1:
+                    opcion = int(input("Usted ya ha realizado el pago, le suplicamos cerrar el tramite"))
              
 
     
-def comprar(productos,stock,precios, nombreProducto,codigoCategoria,nombreCategorias,categoriaProducto):
-    carritoProducto=[]
-    carrito=[]
+def comprar(productos,stock,precios, nombreProducto,codigoCategoria,nombreCategorias,categoriaProducto,carritoProducto,carrito):
+    # carritoProducto=[]
+    # carrito=[]
     montoTotal = 0
     
     categoria = imprimirCategoria(codigoCategoria,nombreCategorias)
@@ -70,7 +78,6 @@ def comprar(productos,stock,precios, nombreProducto,codigoCategoria,nombreCatego
         ident = validarProducto(productos)
     # --------------------------------------------------------
     # falta terminar para que te vuelva a llevar al menu principal, en vez de finalizar la compra
-    imprimirMenu()
         
     if len(carrito) > 0:
         for i in range(len(carrito)):
@@ -101,7 +108,7 @@ def validacionLista(lista,texto,textoError):
     valor = int(input(texto))
     indice = buscarElemento(valor,lista)
     
-    while indice == -1:
+    while indice == -2:
         valor = int(input(textoError))
         indice = buscarElemento(valor,lista)
     
