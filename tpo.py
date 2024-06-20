@@ -41,9 +41,13 @@ def main():
                         ValorFinalCompra.append(ValorFinal)
                         opcion = int(input("Ingrese -1 para finalizar: "))
                         
-                        while opcion != -1:
-                            opcion = int(input("Usted ya ha realizado el pago, le suplicamos cerrar el tramite"))
+                        # while opcion != -1:
+                        #     opcion = int(input("Usted ya ha realizado el pago, le suplicamos cerrar el tramite"))
 
+            # opcion = validacionRango(1,3,-1,"Ingrese una opcion o -1 para finalizar: ", "Usted ingreso una opcion no valida para el sistema, ingrese una opcion valida: ")
+        elif opcion == 2 and ValorCompra == 0:
+            print("No se ha realizado ninguna compra")
+            imprimirMenu()
             opcion = validacionRango(1,3,-1,"Ingrese una opcion o -1 para finalizar: ", "Usted ingreso una opcion no valida para el sistema, ingrese una opcion valida: ")
         
         elif opcion == 3:
@@ -138,14 +142,12 @@ def buscarElemento(valorBuscado,lista):
 def pago(ValorCompra):
     print("1. Efectivo")
     print("2. Tarjetas Debito o Credito")
-    print("3. Trasnferencia")
+    print("3. Transferencia")
     
     Fpago = validacionSimple(1,3,"Seleccione un medio de pago: ","Ingreso un medio de pago no valido. Vuelva a ingresar un medio de pago: ")
     usuario = random.randint(1,2)
     
-    if (usuario % 2) == 0:
-        ValorCompra = ValorCompra * 0.85
-        print("Felicidades se le aplicara un descuento promocional del 15 %")
+    
 
     if Fpago == 1:
         print("En efectivo se le aplicara un descuento del 10%")
@@ -157,10 +159,10 @@ def pago(ValorCompra):
         ValorFinal = ValorCompra
         print(ValorFinal)
     
-    else:
-        ValorFinal = ValorCompra
-        print(ValorFinal)
-    
+    elif (Fpago == 3) and (usuario % 2 == 0):
+        ValorCompra = ValorCompra * 0.85
+        print("Felicidades se le aplicara un descuento promocional del 15 %")
+    ValorFinal = ValorCompra   
     return ValorFinal 
    
 def imprimirMenu():
