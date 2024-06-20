@@ -186,6 +186,31 @@ def validarProducto(productos):
         indice = buscarElemento(identificador,productos) 
     
     return identificador
+
+def bubble_sort_listas_relacionadas(lisat1,lista2):
+    for i in range(0,len(lista1)-1):
+        for j in range(0,len(lista1)-1-i):
+            
+            if (lista1[j] > lista1[j+1]):
+                aux = lista[j]
+                lista[j] = lista[j+1]
+                lista[j+1] = aux
+                
+                aux = lista2[j]
+                lista2[j] = lista2[j+1]
+                lista2[j+1] = aux
+                
+def minimo(lista):
+    for i in range(len(lista)):
+        if i == 0 or lista[i] < valminimo:
+            valminimo == lista[i]
+    return valminimo
+
+def maximo(lista):
+    for i in range(len(lista)):
+        if i == 0 or lista[i] > valmaximo:
+            valmaximo == lista[i]
+    return valmaximo
     
 
 if __name__ == "__main__":
