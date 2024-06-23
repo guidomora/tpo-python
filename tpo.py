@@ -36,20 +36,13 @@ def main():
                         Espacio = bubble_sort(carrito,nombreProducto)
                         carritoDeCompras(nombreProducto,carrito)
                         imprimirMenuFinal()
-                        print(carrito)
-                        print(carritoProducto)
                         opcion = validacionRango(1,2,-1,"Ingrese una opcion o -1 para finalizar: ", "Usted ingreso una opcion no valida para el sistema, ingrese una opcion valida: ")
                     elif opcion == 2:
                         ValorFinal = pago(ValorCompra)
                         ValorFinalCompra.append(ValorFinal)
-                        print("El producto con mas valor vendido fue: ", carrito[Espacio-1], "y el producto con menor valor venindido fue: ", carrito[0])
+                        print("El producto con mas valor vendido fue: ", carrito[Espacio-1], "y el producto con menor valor vendido fue: ", carrito[0])
                         opcion = int(input("Ingrese -1 para finalizar: "))
-                        
-                        
-                        # while opcion != -1:
-                        #     opcion = int(input("Usted ya ha realizado el pago, le suplicamos cerrar el tramite"))
 
-            # opcion = validacionRango(1,3,-1,"Ingrese una opcion o -1 para finalizar: ", "Usted ingreso una opcion no valida para el sistema, ingrese una opcion valida: ")
         elif opcion == 2 and ValorCompra == 0:
             print("No se ha realizado ninguna compra")
             imprimirMenu()
@@ -63,12 +56,7 @@ def main():
             else:
                 ValorFinal = pago(ValorCompra)
                 ValorFinalCompra.append(ValorFinal)
-                # opcion = int(input("Ingrese -1 para finalizar: "))
-                
-                
-                # while opcion != -1:
-                #     opcion = int(input("Usted ya ha realizado el pago, le suplicamos cerrar el tramite"))
-             
+
 
     
 def comprar(productos,stock,precios, nombreProducto,codigoCategoria,nombreCategorias,categoriaProducto,carritoProducto,carrito):
@@ -95,8 +83,6 @@ def comprar(productos,stock,precios, nombreProducto,codigoCategoria,nombreCatego
         imprimirProductosCategoria(categoria,categoriaProducto,nombreProducto,productos,stock,precios)
         ident = validarProducto(productos)
     
-    # --------------------------------------------------------
-    # falta terminar para que te vuelva a llevar al menu principal, en vez de finalizar la compra
         
     if len(carrito) > 0:
         for i in range(len(carrito)):
@@ -116,6 +102,7 @@ def validacionSimple(rango1,rango2,texto,textoEM):
     return valor
 
 def validacionRango(rango1,rango2,cf,texto,textoEM):
+    print("------------------------------------")
     valor = int(input(texto))
     
     while (valor < rango1 or valor > rango2) and valor!= cf:
@@ -204,11 +191,13 @@ def validarProducto(productos):
     return identificador
 
 def imprimirMenuFinal():
+    print("------------------------------------")
     print("1. Ver carrito")
     print("2. Finalizar Pago")
     print("-1. Finalizar ")
     
 def carritoDeCompras(carritoProducto,carrito):
+    print("------------------------------------")
     print("Carrito de compras")
     print("Producto \t\t\t Precio")
     for i in range(len(carrito)):
@@ -230,17 +219,6 @@ def bubble_sort(lista1,lista2):
                 lista2[j+1] = aux
     return Espacio
                 
-# def minimo(lista):
-#     for i in range(len(lista)):
-#         if i == 0 or lista[i] < valminimo:
-#             valminimo == lista[i]
-#     return valminimo
-
-# def maximo(lista):
-#     for i in range(len(lista)):
-#         if i == 0 or lista[i] > valmaximo:
-#             valmaximo == lista[i]
-#     return valmaximo
     
 
 if __name__ == "__main__":
