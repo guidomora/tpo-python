@@ -34,7 +34,7 @@ def main():
                 while opcion != -1:
                     if opcion == 1:
                         Espacio = bubble_sort(carrito,nombreProducto)
-                        carritoDeCompras(nombreProducto,carrito)
+                        carritoDeCompras(carritoProducto,carrito,productos,precios,nombreProducto)
                         imprimirMenuFinal()
                         opcion = validacionRango(1,2,-1,"Ingrese una opcion o -1 para finalizar: ", "Usted ingreso una opcion no valida para el sistema, ingrese una opcion valida: ")
                     elif opcion == 2:
@@ -173,7 +173,6 @@ def imprimirCategoria(codigoCategoria,nombreCategorias):
     categoria = validacionLista(codigoCategoria,"Ingrese el codigo de una categoria: ", "El codigo de la categoria es incorrecto: ")
     return categoria
 
-
 def imprimirProductosCategoria(categoria,listaCategorias,nombreProducto,productos,stock,precios):
     print("Producto 			Identificador	Stock 		Precio")
     for i in range(len(listaCategorias)):
@@ -196,12 +195,14 @@ def imprimirMenuFinal():
     print("2. Finalizar Pago")
     print("-1. Finalizar ")
     
-def carritoDeCompras(carritoProducto,carrito):
+def carritoDeCompras(carritoProducto,carrito,productos,precios,nombreProducto):
     print("------------------------------------")
     print("Carrito de compras")
-    print("Producto \t\t\t Precio")
+    print("Producto\t\t\tPrecio\t\tUnidades")
     for i in range(len(carrito)):
-        print("%15s \t %8d" %(carritoProducto[i],carrito[i]))
+        indice = buscarElemento(carritoProducto[i],productos)
+
+        print("%15s \t %8d \t %3d" %(nombreProducto[indice],carrito[i],(carrito[i]/precios[indice])))
 
         
 
