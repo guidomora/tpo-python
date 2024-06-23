@@ -2,17 +2,20 @@ import random
 def main():
     usuarios = [45,32,65]
     
-    nombreCategorias = ["GPU","RAM","CPU"]
-    codigoCategoria = [23,11,56]
+    nombreCategorias = ["GPU"]
+    codigoCategoria = [23]
     
-    productos = [1,2,3,4,5,6]
-    nombreProducto = ["Placa RADEON 4545","Memoria Ram de 4 GB","Procesadores I7","Placa nvidia 4060","Memoria Ram de 8 GB","Procesador pemtiun"]
-    categoriaProducto=[23,11,56,23,11,56]
-    stock = [2,2,2,2,2,2]
+    productos = [1,2,3,4]
+    nombreProducto = ["Placa RADEON 4545","Placa nvidia 4060", "Placa rtx 3070ti", "Placa RADEON rx 7900"]
+    categoriaProducto=[23,23,23,23]
+    stock = [2,2,2,2]
+    carritoProducto=[]
+    carrito=[]
     
     
-    precios = [50,10,55,20,25,30] 
+    precios = [50,10,55,20,] 
     ValorFinalCompra = []
+    ValorCompra=0
     
     validacionLista(usuarios,"Ingrese su ID de usuario: ", "El ID de usuario es incorrecto ingrese unn ID valido: ")
     
@@ -23,55 +26,95 @@ def main():
     while opcion != -1:
         
         if opcion == 1:
-            ValorCompra = comprar(productos,stock,precios, nombreProducto,codigoCategoria,nombreCategorias,categoriaProducto)
+            ValorCompra = comprar(productos,stock,precios, nombreProducto,codigoCategoria,nombreCategorias,categoriaProducto,carritoProducto,carrito)
+            
+            if ValorCompra != -1:
+                imprimirMenuFinal()
+                opcion = validacionRango(1,2,-1,"Ingrese una opcion o -1 para finalizar: ", "Usted ingreso una opcion no valida para el sistema, ingrese una opcion valida: ")
+                while opcion != -1:
+                    if opcion == 1:
+                        Espacio = bubble_sort(carrito,nombreProducto)
+                        carritoDeCompras(nombreProducto,carrito)
+                        imprimirMenuFinal()
+                        print(carrito)
+                        print(carritoProducto)
+                        opcion = validacionRango(1,2,-1,"Ingrese una opcion o -1 para finalizar: ", "Usted ingreso una opcion no valida para el sistema, ingrese una opcion valida: ")
+                    elif opcion == 2:
+                        ValorFinal = pago(ValorCompra)
+                        ValorFinalCompra.append(ValorFinal)
+                        print("El producto con mas valor vendido fue: ", carrito[Espacio-1], "y el producto con menor valor venindido fue: ", carrito[0])
+                        opcion = int(input("Ingrese -1 para finalizar: "))
+                        
+                        
+                        # while opcion != -1:
+                        #     opcion = int(input("Usted ya ha realizado el pago, le suplicamos cerrar el tramite"))
+
+            # opcion = validacionRango(1,3,-1,"Ingrese una opcion o -1 para finalizar: ", "Usted ingreso una opcion no valida para el sistema, ingrese una opcion valida: ")
+        elif opcion == 2 and ValorCompra == 0:
+            print("No se ha realizado ninguna compra")
             imprimirMenu()
-            opcion = int(input("Ingrese una opcion o -1 para finalizar: "))
+            opcion = validacionRango(1,3,-1,"Ingrese una opcion o -1 para finalizar: ", "Usted ingreso una opcion no valida para el sistema, ingrese una opcion valida: ")
         
         elif opcion == 3:
-            ValorFinal = pago(ValorCompra)
-            ValorFinalCompra.append(ValorFinal)
-            opcion = int(input("Ingrese -1 para finalizar: "))
-            
-            while opcion != -1:
-                opcion = int(input("Usted ya ha realizado el pago, le suplicamos cerrar el tramite"))
+            if ValorCompra == 0:
+                print("No se ha realizado ninguna compra")
+                imprimirMenu()
+                opcion = validacionRango(1,3,-1,"Ingrese una opcion o -1 para finalizar: ", "Usted ingreso una opcion no valida para el sistema, ingrese una opcion valida: ")
+            else:
+                ValorFinal = pago(ValorCompra)
+                ValorFinalCompra.append(ValorFinal)
+                # opcion = int(input("Ingrese -1 para finalizar: "))
+                
+                
+                # while opcion != -1:
+                #     opcion = int(input("Usted ya ha realizado el pago, le suplicamos cerrar el tramite"))
+             
 
     
-def comprar(productos,stock,precios, nombreProducto,codigoCategoria,nombreCategorias,categoriaProducto):
-    carritoProducto=[]
-    carrito=[]
+def comprar(productos,stock,precios, nombreProducto,codigoCategoria,nombreCategorias,categoriaProducto,carritoProducto,carrito):
     montoTotal = 0
     
     categoria = imprimirCategoria(codigoCategoria,nombreCategorias)
     
     imprimirProductosCategoria(categoria,categoriaProducto,nombreProducto,productos,stock,precios)
-
         
-    ident = int(input("Ingrese el identificador del producto que desea agregar al carrito o -1 para finalizar"))
-    
-    while (ident not in productos) and (ident != -1):
-        ident = int(input("Usted ingreso un producto no existente. Ingrese un producto para agregar al carrito o -1 para finalizar"))
+    ident = validarProducto(productos)
 
-    while (ident in productos) and (ident != -1):
-        cantidad = validacionRango(2,-1,"Ingrese la cantidad de productos deseada","Lamentamos informale que no poseemos suficiente stock disponible, seleccioan una cantidad distinta", "Usted ingreso una cantidad no valida para el sistema, ingrese una cantidad valida")
+    while  ident != -1:
         indice = buscarElemento(ident,productos)     
         indiceCarrito = buscarElemento(productos[indice],carritoProducto)
         
-        if indiceCarrito != -1:
+        cantidad = validacionSimple(1,stock[indice],"Ingrese la cantidad que desea adquirir: ","Ingreso una cantidad superior al stock, ingrese un valor valida:  ")
+                
+        if indiceCarrito != -2:
             carrito[indiceCarrito] += precios[indiceCarrito]*cantidad
         else:
             carritoProducto.append(productos[indice])
             carrito.append(precios[indice]*cantidad)
         
-        for i in range(len(productos)):
-            print("%15s \t %8d\t %8d \t %8d" %(nombreProducto[i], productos[i],stock[i], precios[i]))
-        ident = int(input("Ingrese un producto para agregar al carrito o -1 para finalizar"))
-
+        imprimirProductosCategoria(categoria,categoriaProducto,nombreProducto,productos,stock,precios)
+        ident = validarProducto(productos)
     
-    for i in range(len(carrito)):
-        montoTotal += carrito[i]
-    print(montoTotal)
+    # --------------------------------------------------------
+    # falta terminar para que te vuelva a llevar al menu principal, en vez de finalizar la compra
+        
+    if len(carrito) > 0:
+        for i in range(len(carrito)):
+            montoTotal += carrito[i]
+        print(montoTotal)
+    else:
+        montoTotal = -1
+        
     return montoTotal
     
+def validacionSimple(rango1,rango2,texto,textoEM):
+    valor = int(input(texto))
+    
+    while valor < rango1 or valor > rango2:
+        valor = int(input(textoEM))
+            
+    return valor
+
 def validacionRango(rango1,rango2,cf,texto,textoEM):
     valor = int(input(texto))
     
@@ -84,17 +127,17 @@ def validacionLista(lista,texto,textoError):
     valor = int(input(texto))
     indice = buscarElemento(valor,lista)
     
-    while indice == -1:
+    while indice == -2:
         valor = int(input(textoError))
         indice = buscarElemento(valor,lista)
     
     return valor
 
 def buscarElemento(valorBuscado,lista):
-    pos=-1
+    pos=-2
     i=0
     
-    while pos==-1 and i<(len(lista)):
+    while pos==-2 and i<(len(lista)):
         if lista[i] == valorBuscado:
             pos = i
         i+=1    
@@ -104,42 +147,28 @@ def buscarElemento(valorBuscado,lista):
 def pago(ValorCompra):
     print("1. Efectivo")
     print("2. Tarjetas Debito o Credito")
-    print("3. Trasnferencia")
-    Fpago = int(input("Seleccione un medio de pago"))
-    while (Fpago < 1 or Fpago > 3):
-        print("1. Efectivo")
-        print("2. Tarjetas Debito o Credito")
-        print("3. Trasnferencia")
-        Fpago = int(input("Ingreso un medio de pago no valido. Vuelva a ingresar un medio de pago"))
+    print("3. Transferencia")
     
+    Fpago = validacionSimple(1,3,"Seleccione un medio de pago: ","Ingreso un medio de pago no valido. Vuelva a ingresar un medio de pago: ")
     usuario = random.randint(1,2)
-    if (usuario % 2) == 0:
-        if Fpago == 1:
-            Descuento = (ValorCompra * 20) / 100
-            ValorFinal = ValorCompra - Descuento
-            print(ValorFinal)
-        elif Fpago == 2: 
-            Descuento = (ValorCompra * 10) / 100
-            ValorFinal = ValorCompra - Descuento
-            print(ValorFinal)
-        else:
-            Descuento = (ValorCompra * 15) / 100
-            ValorFinal = ValorCompra - Descuento
-            print(ValorFinal)
-    else:
-        if Fpago == 1:
-            Descuento = (ValorCompra * 5) / 100
-            ValorFinal = ValorCompra - Descuento
-            print(ValorFinal)
-        elif Fpago == 2:
-            ValorFinal = ValorCompra
-            print(ValorFinal)
-        else:
-            Descuento = (ValorCompra * 3) / 100
-            ValorFinal = ValorCompra - Descuento
-            print(ValorFinal)
-    return ValorFinal
-   
+    
+    
+
+    if Fpago == 1:
+        print("En efectivo se le aplicara un descuento del 10%")
+        ValorCompra = ValorCompra * 0.90
+        ValorFinal = ValorCompra
+        print(ValorFinal)
+            
+    elif Fpago == 2:
+        ValorFinal = ValorCompra
+        print(ValorFinal)
+    
+    elif (Fpago == 3) and (usuario % 2 == 0):
+        ValorCompra = ValorCompra * 0.85
+        print("Felicidades se le aplicara un descuento promocional del 15 %")
+    ValorFinal = ValorCompra   
+    return ValorFinal 
    
 def imprimirMenu():
     print("Hola Bienvenido a la casita del hardware")
@@ -155,8 +184,6 @@ def imprimirCategoria(codigoCategoria,nombreCategorias):
         print(codigoCategoria[i],". ",nombreCategorias[i])
 
     categoria = validacionLista(codigoCategoria,"Ingrese el codigo de una categoria: ", "El codigo de la categoria es incorrecto: ")
-
-
     return categoria
 
 
@@ -164,8 +191,57 @@ def imprimirProductosCategoria(categoria,listaCategorias,nombreProducto,producto
     print("Producto 			Identificador	Stock 		Precio")
     for i in range(len(listaCategorias)):
         if listaCategorias[i]==categoria:
-            print("%15s \t %8d\t %8d \t %8d" %(nombreProducto[i], productos[i],stock[i], precios[i]))
-            
-         
+            print("%15s \t %8d\t %8d \t %8d" %(nombreProducto[i], productos[i],stock[i], precios[i]))   
+    
+def validarProducto(productos):
+    identificador = int(input("Ingrese el identificador del producto que desea agregar al carrito o -1 para finalizar: "))
+    indice = buscarElemento(identificador,productos)
+    
+    while indice == -2 and identificador != -1:
+        identificador = int(input("Usted ingreso un producto no existente. Ingrese un producto para agregar al carrito o -1 para finalizar: "))
+        indice = buscarElemento(identificador,productos) 
+    
+    return identificador
+
+def imprimirMenuFinal():
+    print("1. Ver carrito")
+    print("2. Finalizar Pago")
+    print("-1. Finalizar ")
+    
+def carritoDeCompras(carritoProducto,carrito):
+    print("Carrito de compras")
+    print("Producto \t\t\t Precio")
+    for i in range(len(carrito)):
+        print("%15s \t %8d" %(carritoProducto[i],carrito[i]))
+
+        
+
+def bubble_sort(lista1,lista2):
+    Espacio = len(lista1)
+    for i in range(0,Espacio-1):
+        for j in range(0,Espacio-1-i):
+            if (lista1[j] > lista1[j+1]):
+                aux = lista1[j]
+                lista1[j] = lista1[j+1]
+                lista1[j+1] = aux
+                
+                aux = lista2[j]
+                lista2[j] = lista2[j+1]
+                lista2[j+1] = aux
+    return Espacio
+                
+# def minimo(lista):
+#     for i in range(len(lista)):
+#         if i == 0 or lista[i] < valminimo:
+#             valminimo == lista[i]
+#     return valminimo
+
+# def maximo(lista):
+#     for i in range(len(lista)):
+#         if i == 0 or lista[i] > valmaximo:
+#             valmaximo == lista[i]
+#     return valmaximo
+    
+
 if __name__ == "__main__":
     main()
